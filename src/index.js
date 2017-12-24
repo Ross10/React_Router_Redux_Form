@@ -2,14 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-
-import App from './components/app';
+import { Router, browserHistory } from 'react-router';
 import reducers from './reducers';
+import routes from './routes';
+import promise from 'redux-promise';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+//This will make sure that all of our Actions will be moving through the promise middleware before moving to the Reducers.
+const createStoreWithMiddleware = applyMiddleware(
+  promise
+)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
+    <Router history={ browserHistory } routes={ routes } />
   </Provider>
   , document.querySelector('.container'));
